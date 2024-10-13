@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logistic Tracking</title>
+    <link rel="shortcut icon" href="./P2.png" type="image/x-icon">
+    <style>
+        .container{
+            text-align: center;
+            padding: 20px;
+        }
+        #trackingResult{
+            margin-top: 20px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+   <div class="container">
+    <h1 id="heading"></h1>
+    <label for="trackingNumber">Tracking Number: </label>
+    <input type="text" id="trackingNumber" placeholder="Search">
+    <button onclick="trackItem()">Track</button>
+    <div id="trackingResult"></div>
+   </div> 
+   <script>
+    let i=0;
+    function trackItem(){
+        const trackingNumber=document.getElementById('trackingNumber').value;
+        const trackingResult=document.getElementById('trackingResult');
+        let heading=document.getElementById('heading')
+        fetch(`https://cat-fact.herokuapp.com/${trackingNumber}`)
+        .then(response=>response.json())
+        .then(data=>{
+            console.log(data)
+            heading.innerHTML=`
+            ${(data[i].type).toUpperCase()} INFORMATION`
+            trackingResult.innerHTML=`
+            <h2>${data[i].text}.</h2>
+            `  
+            if(i<5){
+                i++
+            }else{
+                i=0
+            }
+        })
+        .catch(err=>{
+            trackingResult.innerHTML=`
+            <h1>An error Occurred</h1>
+            <h1>${err}</h1>
+            `
+        })
+    }
+   </script>
+</body>
+</html>
